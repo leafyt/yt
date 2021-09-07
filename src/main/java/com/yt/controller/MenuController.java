@@ -56,7 +56,6 @@ public class MenuController {
 
     /**
      * @param
-     * @Author: Zhaojiatao
      * @Description: 查询parentId为1的所有菜单及子菜单集合
      * @Date: Created in 2018/2/21 12:53
      */
@@ -117,7 +116,6 @@ public class MenuController {
 
     /**
      * @param
-     * @Author: Zhaojiatao
      * @Description: 编辑节点之前将该节点select出来
      * @Date: Created in 2018/2/24 17:03
      */

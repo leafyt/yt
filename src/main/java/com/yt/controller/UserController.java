@@ -29,7 +29,6 @@ import java.util.Map;
 
 /**
  * @param
- * @Author: Zhaojiatao
  * @Description: 当前登录用户控制器
  * @Date: Created in 2018/2/8 19:28
  */
