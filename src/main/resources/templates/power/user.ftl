@@ -4,23 +4,23 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>用户管理表格</title>
 
-<!-- jqGrid组件基础样式包-必要 -->
-<link href="${basePath!}/static/jqgrid/css/ui.jqgrid.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/jqgrid/css/jquery-ui.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/css/global.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/plugins/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/layui/css/layui.css" type="text/css" media="screen" rel="stylesheet"/>
+    <!-- jqGrid组件基础样式包-必要 -->
+    <link href="${basePath!}/static/jqgrid/css/ui.jqgrid.css" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="${basePath!}/static/jqgrid/css/jquery-ui.css" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="${basePath!}/static/css/global.css" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="${basePath!}/static/plugins/font-awesome/css/font-awesome.min.css" type="text/css" media="screen"
+          rel="stylesheet"/>
+    <link href="${basePath!}/static/layui/css/layui.css" type="text/css" media="screen" rel="stylesheet"/>
 
-<!-- jquery插件包-必要 -->
-<!-- 这个是所有jquery插件的基础，首先第一个引入 -->
-<script src="${basePath!}/static/js/jquery.min.js" type="text/javascript"></script>
-<script src="${basePath!}/static/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
-<!-- jqGrid插件的多语言包-非必要 -->
-<!-- 在jqgrid/js/i18n下还有其他的多语言包，可以尝试更换看效果 -->
-<script src="${basePath!}/static/jqgrid/js/i18n/grid.locale-cn.js" type="text/javascript"></script>
-<script src="${basePath!}/static/jqgrid/js/jquery-ui.js" type="text/javascript"></script>
-<script src="${basePath!}/static/layui/layui.js" type="text/javascript"></script>
-
+    <!-- jquery插件包-必要 -->
+    <!-- 这个是所有jquery插件的基础，首先第一个引入 -->
+    <script src="${basePath!}/static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="${basePath!}/static/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+    <!-- jqGrid插件的多语言包-非必要 -->
+    <!-- 在jqgrid/js/i18n下还有其他的多语言包，可以尝试更换看效果 -->
+    <script src="${basePath!}/static/jqgrid/js/i18n/grid.locale-cn.js" type="text/javascript"></script>
+    <script src="${basePath!}/static/jqgrid/js/jquery-ui.js" type="text/javascript"></script>
+    <script src="${basePath!}/static/layui/layui.js" type="text/javascript"></script>
 
 
     <base href="${basePath!}/">
@@ -34,55 +34,55 @@
             //页面加载完成之后执行
             pageInit();
 
-            layui.use(['layer','form','layedit','laydate'], function(){
+            layui.use(['layer', 'form', 'layedit', 'laydate'], function () {
                 var layer = layui.layer,
-                layedit = layui.layedit,
-                laydate = layui.laydate,
-                $ = layui.$,
-                form = layui.form;
+                        layedit = layui.layedit,
+                        laydate = layui.laydate,
+                        $ = layui.$,
+                        form = layui.form;
 
                 //创建一个编辑器
                 var editIndex = layedit.build('LAY_demo_editor');
                 //自定义验证规则
                 form.verify({
-                    userName: function(value) {
-                        if(value.length < 5) {
+                    userName: function (value) {
+                        if (value.length < 5) {
                             return '用户名至少得5个字符';
                         }
                     },
                     password: [/(.+){6,12}$/, '密码必须6到12位'],
-                    content: function(value) {
+                    content: function (value) {
                         layedit.sync(editIndex);
                     }
                 });
 
                 //监听提交
-                form.on('submit(addeditsubmitfilter)', function(data) {
+                form.on('submit(addeditsubmitfilter)', function (data) {
 
                     //为了防止form中的id值被重置后置空,将编辑的id存放在label中
-                    $("#editid").val($("#editlabelid").html() );
+                    $("#editid").val($("#editlabelid").html());
                     $("#editlabelid").html("");
 
                     $.ajax({
                         type: "POST",
-                        url:"admin/user/addupdateuser",
-                        data:$('#addeditformid').serialize(),
+                        url: "admin/user/addupdateuser",
+                        data: $('#addeditformid').serialize(),
                         async: false,
-                        error: function(request) {
+                        error: function (request) {
                             layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                         },
-                        success: function(data) {
-                            if(data.state=='fail'){
+                        success: function (data) {
+                            if (data.state == 'fail') {
                                 layer.alert(data.mesg);
                             }
-                            if(data.state=='success'){
+                            if (data.state == 'success') {
                                 layer.open({
                                     skin: 'layui-layer-molv',
-                                    type:1,
-                                    area:"10%",
-                                    content:data.mesg,
-                                    shadeClose:true,
-                                    end: function(){
+                                    type: 1,
+                                    area: "10%",
+                                    content: data.mesg,
+                                    shadeClose: true,
+                                    end: function () {
                                         layer.close(layerid);
                                         jQuery("#list2").jqGrid().trigger("reloadGrid");//重新加载数据
                                         $("#reset").click();//重置表单
@@ -92,42 +92,38 @@
                             }
                         }
                     });
-
 
 
                     return false;//防止表单提交后跳转
                 });
 
 
-
-
-
                 //监听提交
-                form.on('submit(editroleformsubmit)', function(data) {
+                form.on('submit(editroleformsubmit)', function (data) {
                     //为了防止form中的id值被重置后置空,将编辑的id存放在label中
-                    $("#editroleid").val($("#editrolelabelid").html() );
+                    $("#editroleid").val($("#editrolelabelid").html());
                     $("#editrolelabelid").html("");
 
                     $.ajax({
                         type: "POST",
-                        url:"admin/user/saveRoleSet",
-                        data:$('#editroleformid').serialize(),// 你的formid
+                        url: "admin/user/saveRoleSet",
+                        data: $('#editroleformid').serialize(),// 你的formid
                         async: false,
-                        error: function(request) {
+                        error: function (request) {
                             layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                         },
-                        success: function(data) {
-                            if(data.state=='fail'){
+                        success: function (data) {
+                            if (data.state == 'fail') {
                                 layer.alert(data.mesg);
                             }
-                            if(data.state=='success'){
+                            if (data.state == 'success') {
                                 layer.open({
                                     skin: 'layui-layer-molv',
-                                    type:1,
-                                    area:"10%",
-                                    content:data.mesg,
-                                    shadeClose:true,
-                                    end: function(){
+                                    type: 1,
+                                    area: "10%",
+                                    content: data.mesg,
+                                    shadeClose: true,
+                                    end: function () {
                                         layer.close(layerid);
                                         jQuery("#list2").jqGrid().trigger("reloadGrid");//重新加载数据
                                         $("#reset").click();//重置表单
@@ -137,7 +133,6 @@
                             }
                         }
                     });
-
 
 
                     return false;
@@ -162,7 +157,8 @@
                         colNames: ['ID', '用户名', '密码', '真实姓名', '备注', '拥有角色'],//jqGrid的列显示名字
                         colModel: [  //这里会根据index去解析jsonReader中root对象的属性，填充cell
                             {name: 'id', index: 'id', width: 100, sortable: true, search: false},
-                            {name: 'userName', index: 'userName', width: 180, sortable: false,search: true,
+                            {
+                                name: 'userName', index: 'userName', width: 180, sortable: false, search: true,
                                 //被该列搜索时的搜索条件有哪些
                                 searchoptions: {sopt: ['eq']}
                                 //如果使用自定义按钮点击事件的方式进行记录增删改操作的话下面的配置可以去掉
@@ -228,11 +224,11 @@
             //添加按钮点击事件
             $("#add").click(function () {
                 $("#reset").click();//重置表单(新建时在进入表单前要重置一下表单的内容，不然表单打开后会显示上一次的表单的内容。这里调用表单中重置按钮的点击方法来重置)
-                layerid=layer.open({//开启表单弹层
+                layerid = layer.open({//开启表单弹层
                     skin: 'layui-layer-molv',
-                    area:'60%',
+                    area: '60%',
                     type: 1,
-                    title:'新建用户',
+                    title: '新建用户',
                     content: $('#addeditformdivid') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 });
             });
@@ -245,34 +241,34 @@
                     var ret = jQuery("#list2").jqGrid('getRowData', id);//通过jqgrid的逻辑id获取该行数据，通过数据对象ret来获取表单主键字段ret.id
 
                     layer.open({
-                        content: '请确定是否真的要删除id为'+ret.id+'的记录?',
+                        content: '请确定是否真的要删除id为' + ret.id + '的记录?',
                         btn: ['yes', 'no'],//定义两个按钮，是和否
-                        yes: function(index, layero){//点击是时候的回调
+                        yes: function (index, layero) {//点击是时候的回调
                             //do something
                             layer.close(index); //如果设定了yes回调，需进行手工关闭
 
                             //请求后台，执行删除操作
                             $.ajax({
                                 type: "POST",
-                                url:"admin/user/deleteuser",
-                                data:{id:ret.id},
+                                url: "admin/user/deleteuser",
+                                data: {id: ret.id},
                                 async: false,
-                                error: function(request) {
+                                error: function (request) {
                                     layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                                 },
-                                success: function(data) {
-                                    if(data.state=='fail'){
+                                success: function (data) {
+                                    if (data.state == 'fail') {
                                         layer.alert(data.mesg);
                                     }
-                                    if(data.state=='success'){
+                                    if (data.state == 'success') {
                                         //打开成功消息提示
                                         layer.open({
                                             skin: 'layui-layer-molv',
-                                            type:1,
-                                            area:"10%",
-                                            content:data.mesg,
-                                            shadeClose:true,
-                                            end: function(){
+                                            type: 1,
+                                            area: "10%",
+                                            content: data.mesg,
+                                            shadeClose: true,
+                                            end: function () {
                                                 layer.close(layerid);//消息提示结束后回调，关闭上一级新建表单所在弹层
                                                 jQuery("#list2").jqGrid().trigger("reloadGrid");//jqgrid数据表重新主动加载数据
                                             }
@@ -281,7 +277,6 @@
                                     }
                                 }
                             });
-
 
 
                         }
@@ -296,8 +291,6 @@
             });
 
 
-
-
             $("#edit").click(function () {
 
                 var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');//jqgrid逻辑id，不是业务表单的主键字段id,这里要注意
@@ -307,18 +300,18 @@
                     //请求后台，获取该记录的详细记录，并填充进表单
                     $.ajax({
                         type: "POST",
-                        url:"admin/user/selectUserById",
-                        data:{id:ret.id},
+                        url: "admin/user/selectUserById",
+                        data: {id: ret.id},
                         async: false,
-                        error: function(request) {
+                        error: function (request) {
                             layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                         },
-                        success: function(data) {
-                            if(data.state=='fail'){
+                        success: function (data) {
+                            if (data.state == 'fail') {
                                 layer.alert(data.mesg);
                                 return false;
                             }
-                            if(data.state=='success'){
+                            if (data.state == 'success') {
                                 //向表单填充数据
                                 $("#editlabelid").html(ret.id);//临时存放id，当提交时再去除赋值给input
                                 $("#userName").val(data.tuser.userName);
@@ -327,11 +320,11 @@
                                 $("#bz").val(data.tuser.bz);
 
                                 //开启编辑表单所在的弹层。注意编辑和新建的表单是一套模板
-                                layerid=layer.open({
+                                layerid = layer.open({
                                     skin: 'layui-layer-molv',
-                                    area:'60%',
+                                    area: '60%',
                                     type: 1,
-                                    title:'编辑用户',
+                                    title: '编辑用户',
                                     content: $('#addeditformdivid') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                 });
 
@@ -348,8 +341,6 @@
             });
 
 
-
-
             //编辑用户角色
             $("#editrole").click(function () {
 
@@ -360,41 +351,41 @@
                     //获得当前用户已经拥有的角色集合和未拥有的角色集合，并组装表单的复选按钮
                     $.ajax({
                         type: "POST",
-                        url:"admin/user/selectUserById",
-                        data:{id:ret.id},
+                        url: "admin/user/selectUserById",
+                        data: {id: ret.id},
                         async: false,
-                        error: function(request) {
+                        error: function (request) {
                             layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                         },
-                        success: function(data) {
-                            if(data.state=='fail'){
+                        success: function (data) {
+                            if (data.state == 'fail') {
                                 layer.alert(data.mesg);
                                 return false;
                             }
-                            if(data.state=='success'){
+                            if (data.state == 'success') {
                                 $("#editrolelabelid").html(ret.id);//临时存放id，当提交时再去除赋值给input
-                                var roleList=[];
-                                roleList=data.roleList;//该记录已经拥有的记录集合
-                                var notinrolelist=[];
-                                notinrolelist=data.notinrolelist;//该记录尚未拥有的记录集合
+                                var roleList = [];
+                                roleList = data.roleList;//该记录已经拥有的记录集合
+                                var notinrolelist = [];
+                                notinrolelist = data.notinrolelist;//该记录尚未拥有的记录集合
 
-                                var strs="";
+                                var strs = "";
                                 $.each(roleList, function (n, value) {//n从0开始自增+1；value为每次循环的单个对象
-                                    strs+='<input type="checkbox" name="role" title="'+value.name+'" value="'+value.id+'"  checked="checked">';
+                                    strs += '<input type="checkbox" name="role" title="' + value.name + '" value="' + value.id + '"  checked="checked">';
                                 });
                                 $.each(notinrolelist, function (n, value) {
-                                    strs+='<input type="checkbox" name="role" title="'+value.name+'"  value="'+value.id+'" >';
+                                    strs += '<input type="checkbox" name="role" title="' + value.name + '"  value="' + value.id + '" >';
                                 });
                                 $("#checkboxlistid").empty();//每次填充前都要清空所有按钮，重新填充
                                 $("#checkboxlistid").append(strs);
 
                                 layui.form.render(); //更新全部
 
-                                layerid=layer.open({
+                                layerid = layer.open({
                                     skin: 'layui-layer-molv',
-                                    area:'60%',
+                                    area: '60%',
                                     type: 1,
-                                    title:'编辑用户角色',
+                                    title: '编辑用户角色',
                                     content: $('#editroleformdivid') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                                 });
 
@@ -411,9 +402,7 @@
             });
 
 
-
         }
-
 
 
     </script>
@@ -450,19 +439,22 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-block">
-                <input type="text" id="userName" name="userName" lay-verify="userName" autocomplete="off" placeholder="请输入用户名" class="layui-input">
+                <input type="text" id="userName" name="userName" lay-verify="userName" autocomplete="off"
+                       placeholder="请输入用户名" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">密码</label>
             <div class="layui-input-block">
-            <input type="text" id="password" name="password" lay-verify="password" autocomplete="off" placeholder="请输入密码" class="layui-input">
-        </div>
+                <input type="text" id="password" name="password" lay-verify="password" autocomplete="off"
+                       placeholder="请输入密码" class="layui-input">
+            </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">真实姓名</label>
             <div class="layui-input-block">
-                <input type="text" id="trueName" name="trueName" autocomplete="off" placeholder="请输入真实姓名" class="layui-input">
+                <input type="text" id="trueName" name="trueName" autocomplete="off" placeholder="请输入真实姓名"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -488,7 +480,7 @@
 <div id="editroleformdivid" hidden="" class="layui-fluid" style="margin: 15px;">
     <form class="layui-form" action="" id="editroleformid">
         <label hidden="true" id="editrolelabelid"></label>
-        <input id="editroleid" name="id" value="" hidden />
+        <input id="editroleid" name="id" value="" hidden/>
         <div class="layui-form-item">
             <label class="layui-form-label">角色复选框</label>
             <div class="layui-input-block" id="checkboxlistid">

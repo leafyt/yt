@@ -5,12 +5,12 @@
 
 <script>
     //一般直接写在一个js文件中
-    layui.use(['layer','form','table'], function(){
+    layui.use(['layer', 'form', 'table'], function () {
         var layer = layui.layer
-            ,form = layui.form
-            ,$ = layui.$
-            ,laytpl = layui.laytpl
-            ,table = layui.table;
+                , form = layui.form
+                , $ = layui.$
+                , laytpl = layui.laytpl
+                , table = layui.table;
 
 
         //监听表单提交事件
@@ -18,23 +18,23 @@
             $("#userId").val(${currentUser.id!});
             $.ajax({
                 type: "POST",
-                url:"admin/user/updatePassword",
-                data:$("#formid").serialize(),
+                url: "admin/user/updatePassword",
+                data: $("#formid").serialize(),
                 async: false,
-                error: function(request) {
+                error: function (request) {
                     layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                 },
-                success: function(data) {
-                    if(data.state=='fail'){
+                success: function (data) {
+                    if (data.state == 'fail') {
                         layer.alert(data.mesg);
                         return false;
                     }
-                    if(data.state=='success'){
+                    if (data.state == 'success') {
                         layer.open({
                             content: data.mesg,
-                            yes: function(index, layero){
+                            yes: function (index, layero) {
                                 //do something
-                                window.location.href="${basePath!}/user/logout";
+                                window.location.href = "${basePath!}/user/logout";
                             }
                         });
                         return false;
@@ -44,7 +44,6 @@
 
             return false;//防止表单提交
         });
-
 
 
     });
@@ -60,20 +59,23 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-block">
-                <input type="text" name="userName" readonly value="${currentUser.userName!}" lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                <input type="text" name="userName" readonly value="${currentUser.userName!}" lay-verify="required"
+                       placeholder="请输入用户名" autocomplete="off" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">旧密码</label>
             <div class="layui-input-inline">
-                <input type="password" name="oldPassword" required lay-verify="required" placeholder="请输入旧密码" autocomplete="off" class="layui-input">
+                <input type="password" name="oldPassword" required lay-verify="required" placeholder="请输入旧密码"
+                       autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">旧密码</div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">新密码</label>
             <div class="layui-input-inline">
-                <input type="password" name="password" required lay-verify="required" placeholder="请输入新密码" autocomplete="off" class="layui-input">
+                <input type="password" name="password" required lay-verify="required" placeholder="请输入新密码"
+                       autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">新密码</div>
         </div>
@@ -85,8 +87,6 @@
             </div>
         </div>
     </form>
-
-
 
 
 </div>

@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="cn">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>角色管理表格</title>
-<!-- jqGrid组件基础样式包-必要 -->
-<link href="${basePath!}/static/jqgrid/css/ui.jqgrid.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/jqgrid/css/jquery-ui.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/css/global.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/plugins/font-awesome/css/font-awesome.min.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/layui/css/layui.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/css/ztree/metroStyle/metroStyle.css" type="text/css" media="screen" rel="stylesheet"/>
-<link href="${basePath!}/static/css/ztree/demo.css" type="text/css" media="screen" rel="stylesheet"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>角色管理表格</title>
+    <!-- jqGrid组件基础样式包-必要 -->
+    <link href="${basePath!}/static/jqgrid/css/ui.jqgrid.css" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="${basePath!}/static/jqgrid/css/jquery-ui.css" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="${basePath!}/static/css/global.css" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="${basePath!}/static/plugins/font-awesome/css/font-awesome.min.css" type="text/css" media="screen"
+          rel="stylesheet"/>
+    <link href="${basePath!}/static/layui/css/layui.css" type="text/css" media="screen" rel="stylesheet"/>
+    <link href="${basePath!}/static/css/ztree/metroStyle/metroStyle.css" type="text/css" media="screen"
+          rel="stylesheet"/>
+    <link href="${basePath!}/static/css/ztree/demo.css" type="text/css" media="screen" rel="stylesheet"/>
 
-<!-- jquery插件包-必要 -->
-<!-- 这个是所有jquery插件的基础，首先第一个引入 -->
-<script src="${basePath!}/static/js/jquery.min.js" type="text/javascript"></script>
-<script src="${basePath!}/static/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
-<!-- jqGrid插件的多语言包-非必要 -->
-<!-- 在jqgrid/js/i18n下还有其他的多语言包，可以尝试更换看效果 -->
-<script src="${basePath!}/static/jqgrid/js/i18n/grid.locale-cn.js" type="text/javascript"></script>
-<script src="${basePath!}/static/jqgrid/js/jquery-ui.js" type="text/javascript"></script>
-<script src="${basePath!}/static/layui/layui.js" type="text/javascript"></script>
-<script src="${basePath!}/static/js/ztree/jquery.ztree.all.js" type="text/javascript"></script>
+    <!-- jquery插件包-必要 -->
+    <!-- 这个是所有jquery插件的基础，首先第一个引入 -->
+    <script src="${basePath!}/static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="${basePath!}/static/jqgrid/js/jquery.jqGrid.min.js" type="text/javascript"></script>
+    <!-- jqGrid插件的多语言包-非必要 -->
+    <!-- 在jqgrid/js/i18n下还有其他的多语言包，可以尝试更换看效果 -->
+    <script src="${basePath!}/static/jqgrid/js/i18n/grid.locale-cn.js" type="text/javascript"></script>
+    <script src="${basePath!}/static/jqgrid/js/jquery-ui.js" type="text/javascript"></script>
+    <script src="${basePath!}/static/layui/layui.js" type="text/javascript"></script>
+    <script src="${basePath!}/static/js/ztree/jquery.ztree.all.js" type="text/javascript"></script>
 
 
-<base href="${basePath!}/">
+    <base href="${basePath!}/">
 
 </head>
 <body>
@@ -47,7 +49,8 @@
         <div class="layui-form-item">
             <label class="layui-form-label">角色名称</label>
             <div class="layui-input-block">
-                <input type="text" id="name" name="name" lay-verify="name" autocomplete="off" placeholder="请输入角色名称" class="layui-input">
+                <input type="text" id="name" name="name" lay-verify="name" autocomplete="off" placeholder="请输入角色名称"
+                       class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -70,7 +73,7 @@
 
 
 <#--菜单权限设置弹窗-->
-<div  id="setpermisdiv" hidden="" class="layui-fluid" >
+<div id="setpermisdiv" hidden="" class="layui-fluid">
     <ul id="treeDemo" class="ztree"></ul>
     <button class="layui-btn" id="savesetpermis">保存权限设置</button>
     <button class="layui-btn" id="closesetpermis">关闭</button>
@@ -82,34 +85,34 @@
 
 
             var nodes = zTreeObj1.getCheckedNodes(true);
-            var menuArrIds=[];
-            for(var i=0;i<nodes.length;i++){
+            var menuArrIds = [];
+            for (var i = 0; i < nodes.length; i++) {
                 //alert(menuIds);
                 menuArrIds.push(nodes[i].id);
             }
-            var menuIds=menuArrIds.join(",");
+            var menuIds = menuArrIds.join(",");
             //alert(menuIds);
 
             $.ajax({
                 type: "POST",
-                url:"admin/role/saveMenuSet",
-                data:{menuIds:menuIds,roleId:ret.id},
+                url: "admin/role/saveMenuSet",
+                data: {menuIds: menuIds, roleId: ret.id},
                 async: false,
-                error: function(request) {
+                error: function (request) {
                     layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                 },
-                success: function(data) {
-                    if(data.state=='fail'){
+                success: function (data) {
+                    if (data.state == 'fail') {
                         layer.alert(data.mesg);
                     }
-                    if(data.state=='success'){
+                    if (data.state == 'success') {
                         layer.open({
                             skin: 'layui-layer-molv',
-                            type:1,
-                            area:"10%",
-                            content:data.mesg,
-                            shadeClose:true,
-                            end: function(){
+                            type: 1,
+                            area: "10%",
+                            content: data.mesg,
+                            shadeClose: true,
+                            end: function () {
                                 layer.close(layerid);
                                 jQuery("#list2").jqGrid().trigger("reloadGrid");//重新加载数据
                                 //location.reload();
@@ -195,9 +198,6 @@
 </div>-->
 
 
-
-
-
 </body>
 </html>
 
@@ -207,7 +207,7 @@
     var zTreeObj1;
     var zTreeObj2;
     var layerid;//当前弹层id;这个id可以定义多个，主要的目的是为了在回调函数关闭弹层时使用的
-    layui.use(['layer','form','layedit','laydate'], function(){
+    layui.use(['layer', 'form', 'layedit', 'laydate'], function () {
         var layer = layui.layer,
                 layedit = layui.layedit,
                 laydate = layui.laydate,
@@ -217,44 +217,44 @@
         var editIndex = layedit.build('LAY_demo_editor');
         //自定义验证规则
         form.verify({
-            name: function(value) {
-                if(value.length < 5) {
-                    return '角色名至少得5个字符';
+            name: function (value) {
+                if (value.length < 3) {
+                    return '角色名至少得3个字符';
                 }
             },
             password: [/(.+){6,12}$/, '密码必须6到12位'],
-            content: function(value) {
+            content: function (value) {
                 layedit.sync(editIndex);
             }
         });
 
         //监听提交
-        form.on('submit(addeditsubmitfilter)', function(data) {
+        form.on('submit(addeditsubmitfilter)', function (data) {
 
             //为了防止form中的id值被重置后置空,将编辑的id存放在label中
-            $("#editid").val($("#editlabelid").html() );
+            $("#editid").val($("#editlabelid").html());
             $("#editlabelid").html("");
 
             $.ajax({
                 type: "POST",
-                url:"admin/role/addupdaterole",
-                data:$('#addeditformid').serialize(),
+                url: "admin/role/addupdaterole",
+                data: $('#addeditformid').serialize(),
                 async: false,
-                error: function(request) {
+                error: function (request) {
                     layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                 },
-                success: function(data) {
-                    if(data.state=='fail'){
+                success: function (data) {
+                    if (data.state == 'fail') {
                         layer.alert(data.mesg);
                     }
-                    if(data.state=='success'){
+                    if (data.state == 'success') {
                         layer.open({
                             skin: 'layui-layer-molv',
-                            type:1,
-                            area:"10%",
-                            content:data.mesg,
-                            shadeClose:true,
-                            end: function(){
+                            type: 1,
+                            area: "10%",
+                            content: data.mesg,
+                            shadeClose: true,
+                            end: function () {
                                 layer.close(layerid);
                                 jQuery("#list2").jqGrid().trigger("reloadGrid");//重新加载数据
                                 $("#reset").click();//重置表单
@@ -264,38 +264,37 @@
                     }
                 }
             });
-
 
 
             return false;
         });
 
         //监听提交
-        form.on('submit(editroleformsubmit)', function(data) {
+        form.on('submit(editroleformsubmit)', function (data) {
             //为了防止form中的id值被重置后置空,将编辑的id存放在label中
-            $("#editroleid").val($("#editrolelabelid").html() );
+            $("#editroleid").val($("#editrolelabelid").html());
             $("#editrolelabelid").html("");
 
             $.ajax({
                 type: "POST",
-                url:"admin/user/saveRoleSet",
-                data:$('#editroleformid').serialize(),// 你的formid
+                url: "admin/user/saveRoleSet",
+                data: $('#editroleformid').serialize(),// 你的formid
                 async: false,
-                error: function(request) {
+                error: function (request) {
                     layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                 },
-                success: function(data) {
-                    if(data.state=='fail'){
+                success: function (data) {
+                    if (data.state == 'fail') {
                         layer.alert(data.mesg);
                     }
-                    if(data.state=='success'){
+                    if (data.state == 'success') {
                         layer.open({
                             skin: 'layui-layer-molv',
-                            type:1,
-                            area:"10%",
-                            content:data.mesg,
-                            shadeClose:true,
-                            end: function(){
+                            type: 1,
+                            area: "10%",
+                            content: data.mesg,
+                            shadeClose: true,
+                            end: function () {
                                 layer.close(layerid);
                                 jQuery("#list2").jqGrid().trigger("reloadGrid");//重新加载数据
                                 $("#reset").click();//重置表单
@@ -305,7 +304,6 @@
                     }
                 }
             });
-
 
 
             return false;//防止跳转
@@ -314,11 +312,11 @@
         //添加按钮点击事件
         $("#add").click(function () {
             $("#reset").click();//重置表单(新建时在进入表单前要重置一下表单的内容，不然表单打开后会显示上一次的表单的内容。这里调用表单中重置按钮的点击方法来重置)
-            layerid=layer.open({//开启表单弹层
+            layerid = layer.open({//开启表单弹层
                 skin: 'layui-layer-molv',
-                area:'60%',
+                area: '60%',
                 type: 1,
-                title:'新建角色',
+                title: '新建角色',
                 content: $('#addeditformdivid') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
             });
         });
@@ -330,34 +328,34 @@
                 var ret = jQuery("#list2").jqGrid('getRowData', id);//通过jqgrid的逻辑id获取该行数据，通过数据对象ret来获取表单主键字段ret.id
 
                 layer.open({
-                    content: '请确定是否真的要删除id为'+ret.id+'的记录?',
+                    content: '请确定是否真的要删除id为' + ret.id + '的记录?',
                     btn: ['yes', 'no'],//定义两个按钮，是和否
-                    yes: function(index, layero){//点击是时候的回调
+                    yes: function (index, layero) {//点击是时候的回调
                         //do something
                         layer.close(index); //如果设定了yes回调，需进行手工关闭
 
                         //请求后台，执行删除操作
                         $.ajax({
                             type: "POST",
-                            url:"admin/role/deleterole",
-                            data:{id:ret.id},
+                            url: "admin/role/deleterole",
+                            data: {id: ret.id},
                             async: false,
-                            error: function(request) {
+                            error: function (request) {
                                 layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                             },
-                            success: function(data) {
-                                if(data.state=='fail'){
+                            success: function (data) {
+                                if (data.state == 'fail') {
                                     layer.alert(data.mesg);
                                 }
-                                if(data.state=='success'){
+                                if (data.state == 'success') {
                                     //打开成功消息提示
                                     layer.open({
                                         skin: 'layui-layer-molv',
-                                        type:1,
-                                        area:"10%",
-                                        content:data.mesg,
-                                        shadeClose:true,
-                                        end: function(){
+                                        type: 1,
+                                        area: "10%",
+                                        content: data.mesg,
+                                        shadeClose: true,
+                                        end: function () {
                                             layer.close(layerid);//消息提示结束后回调，关闭上一级新建表单所在弹层
                                             jQuery("#list2").jqGrid().trigger("reloadGrid");//jqgrid数据表重新主动加载数据
                                         }
@@ -366,7 +364,6 @@
                                 }
                             }
                         });
-
 
 
                     }
@@ -389,29 +386,29 @@
                 //请求后台，获取该记录的详细记录，并填充进表单
                 $.ajax({
                     type: "POST",
-                    url:"admin/role/selectRoleById",
-                    data:{id:ret.id},
+                    url: "admin/role/selectRoleById",
+                    data: {id: ret.id},
                     async: false,
-                    error: function(request) {
+                    error: function (request) {
                         layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
                     },
-                    success: function(data) {
-                        if(data.state=='fail'){
+                    success: function (data) {
+                        if (data.state == 'fail') {
                             layer.alert(data.mesg);
                             return false;
                         }
-                        if(data.state=='success'){
+                        if (data.state == 'success') {
                             //向表单填充数据
                             $("#editlabelid").html(ret.id);//临时存放id，当提交时再去除赋值给input
                             $("#name").val(data.trole.name);
                             $("#bz").val(data.trole.bz);
 
                             //开启编辑表单所在的弹层。注意编辑和新建的表单是一套模板
-                            layerid=layer.open({
+                            layerid = layer.open({
                                 skin: 'layui-layer-molv',
-                                area:'60%',
+                                area: '60%',
                                 type: 1,
-                                title:'编辑角色',
+                                title: '编辑角色',
                                 content: $('#addeditformdivid') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                             });
 
@@ -447,7 +444,8 @@
                         colNames: ['ID', '角色名称', '备注', '权限菜单设置'],//jqGrid的列显示名字
                         colModel: [  //这里会根据index去解析jsonReader中root对象的属性，填充cell
                             {name: 'id', index: 'id', width: 100, sortable: true, search: false},
-                            {name: 'name', index: 'name', width: 220, sortable: false,search: true,
+                            {
+                                name: 'name', index: 'name', width: 220, sortable: false, search: true,
                                 //被该列搜索时的搜索条件有哪些
                                 searchoptions: {sopt: ['eq']}
                                 /*
@@ -456,7 +454,14 @@
                                 editoptions: {size: "20", maxlength: "30"}//当执行修改和新增的操作时，会显示输入框，输入框的配置*/
                             },
                             {name: 'bz', index: 'bz', width: 400, sortable: false, search: false},
-                            {name: 'setpermis', index: 'setpermis', align: "center", width: 300, sortable: false, search: false}
+                            {
+                                name: 'setpermis',
+                                index: 'setpermis',
+                                align: "center",
+                                width: 300,
+                                sortable: false,
+                                search: false
+                            }
                         ],
 
                         //在gridComplete事件中添加：
@@ -466,11 +471,11 @@
                                 //alert(ids[i]);
                                 var id = ids[i];
                                 // var editBtn = "<a href='javascript:void(0)' style='color:#f60' onclick='' >设置权限</a>";
-                                var editBtn= '<button onclick="setrolelayer('+ids[i]+')" class="layui-btn layui-btn-radius layui-btn-xs" style="width:inherit;height: 85%">'+
-                                        '<i class="layui-icon">&#xe642;</i>设置菜单权限'+
+                                var editBtn = '<button onclick="setrolelayer(' + ids[i] + ')" class="layui-btn layui-btn-radius layui-btn-xs" style="width:inherit;height: 85%">' +
+                                        '<i class="layui-icon">&#xe642;</i>设置菜单权限' +
                                         '</button>';
 
-                                jQuery("#list2").jqGrid('setRowData', ids[i], { setpermis: editBtn });
+                                jQuery("#list2").jqGrid('setRowData', ids[i], {setpermis: editBtn});
                             }
                         },
 
@@ -532,10 +537,10 @@
     function setrolelayer(id) {
         // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
         var setting = {
-            check:{
+            check: {
                 enable: true,
                 chkStyle: "checkbox",
-                chkboxType :{ "Y" : "p", "N" : "s" },
+                chkboxType: {"Y": "p", "N": "s"},
                 nocheckInherit: true,
                 chkDisabledInherit: true
             }
@@ -543,33 +548,36 @@
         // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
 
         var zNodes = [
-            {name:"test1", open:true, children:[
-                {name:"test1_1"}, {name:"test1_2"}]},
-            {name:"test2", open:true, children:[
-                {name:"test2_1"}, {name:"test2_2"}]}
+            {
+                name: "test1", open: true, children: [
+                    {name: "test1_1"}, {name: "test1_2"}]
+            },
+            {
+                name: "test2", open: true, children: [
+                    {name: "test2_1"}, {name: "test2_2"}]
+            }
         ];
-
 
 
         $.ajax({
             type: "POST",
-            url:'admin/role/loadCheckMenuInfo?parentId=1&roleId='+id,
+            url: 'admin/role/loadCheckMenuInfo?parentId=1&roleId=' + id,
             async: false,
             dataType: 'json',
             timeout: 1000,
             cache: false,
-            error: function(request) {
+            error: function (request) {
                 layer.alert("与服务器连接失败/(ㄒoㄒ)/~~");
             },
-            success: function(data) {
-                zNodes=data;
+            success: function (data) {
+                zNodes = data;
 
                 zTreeObj1 = $.fn.zTree.init($("#treeDemo"), setting, zNodes);
 
-                layerid=layer.open({//开启表单弹层
+                layerid = layer.open({//开启表单弹层
                     skin: 'layui-layer-molv',
                     type: 1,
-                    title:'设置权限',
+                    title: '设置权限',
                     content: $('#setpermisdiv') //这里content是一个DOM，注意：最好该元素要存放在body最外层，否则可能被其它的相对元素所影响
                 });
 
@@ -628,8 +636,6 @@
         });
 
     }*/
-
-
 
 
 </script>

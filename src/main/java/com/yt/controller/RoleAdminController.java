@@ -1,4 +1,4 @@
-package com.yt.web;
+package com.yt.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.google.gson.JsonArray;
@@ -23,9 +23,9 @@ import java.util.*;
 
 /**
  * 后台管理用户Controller
-         *
-         * @author yt
-        */
+ *
+ * @author yt
+ */
 @Controller
 @RequestMapping("/admin/role")
 public class RoleAdminController {
@@ -60,7 +60,7 @@ public class RoleAdminController {
     @RequestMapping(value = "/list")
     @RequiresPermissions(value = {"角色管理"})
     public Map<String, Object> list(JqgridBean jqgridbean
-                    /*String userName,@RequestParam(value="page",required=false)Integer page*/
+            /*String userName,@RequestParam(value="page",required=false)Integer page*/
     ) throws Exception {
         LinkedHashMap<String, Object> resultmap = new LinkedHashMap<String, Object>();
         LinkedHashMap<String, Object> datamap = new LinkedHashMap<String, Object>();
@@ -72,14 +72,14 @@ public class RoleAdminController {
         if (StringUtils.isNotEmpty(jqgridbean.getSearchField())) {
             if ("name".equalsIgnoreCase(jqgridbean.getSearchField())) {
                 if ("eq".contentEquals(jqgridbean.getSearchOper())) {
-                    criteria.andEqualTo("name",jqgridbean.getSearchString());
+                    criteria.andEqualTo("name", jqgridbean.getSearchString());
                 }
             }
         }
 
         PageHelper.startPage(jqgridbean.getPage(), jqgridbean.getLength());
         List<Trole> roleList = roleService.selectByExample(troleExample);
-        PageRusult<Trole> pageRusult =new PageRusult<Trole>(roleList);
+        PageRusult<Trole> pageRusult = new PageRusult<Trole>(roleList);
 
         /*Integer totalrecords = roleService.countByExample(troleExample);//总记录数
         Page pagebean = new Page(jqgridbean.getLength() * ((jqgridbean.getPage() > 0 ? jqgridbean.getPage() : 1) - 1), jqgridbean.getLength(), totalrecords);
@@ -105,7 +105,7 @@ public class RoleAdminController {
             if (trole.getId() == null) {//新建
                 //首先判断用户名是否可用
                 Example troleExample = new Example(Trole.class);
-                troleExample.or().andEqualTo("name",trole.getName());
+                troleExample.or().andEqualTo("name", trole.getName());
                 List<Trole> rolelist = roleService.selectByExample(troleExample);
                 if (rolelist != null && rolelist.size() > 0) {
                     resultmap.put("state", "fail");
@@ -150,10 +150,10 @@ public class RoleAdminController {
                 } else {
                     //还需删除用户角色中间表
                     Example tuserroleexample = new Example(Tuserrole.class);
-                    tuserroleexample.or().andEqualTo("roleId",trole.getId());
+                    tuserroleexample.or().andEqualTo("roleId", trole.getId());
                     userRoleService.deleteByExample(tuserroleexample);
                     Example trolemenuexample = new Example(Trolemenu.class);
-                    trolemenuexample.or().andEqualTo("roleId",trole.getId());
+                    trolemenuexample.or().andEqualTo("roleId", trole.getId());
                     trolemenuService.deleteByExample(trolemenuexample);
 
                     roleService.delete(trole.getId());
@@ -250,10 +250,10 @@ public class RoleAdminController {
         for (int i = 0; i < jsonArray.size(); i++) {
             JsonObject jsonObject = (JsonObject) jsonArray.get(i);
             //判断该节点下时候还有子节点
-            Example example=new Example(Tmenu.class);
-            example.or().andEqualTo("pId",jsonObject.get("id").getAsString());
+            Example example = new Example(Tmenu.class);
+            example.or().andEqualTo("pId", jsonObject.get("id").getAsString());
             //if ("open".equals(jsonObject.get("state").getAsString())) {
-            if (tmenuService.selectCountByExample(example)==0) {
+            if (tmenuService.selectCountByExample(example) == 0) {
                 continue;
             } else {
                 jsonObject.add("children", getAllCheckedMenuByParentId(jsonObject.get("id").getAsInt(), menuIdList));
@@ -271,7 +271,7 @@ public class RoleAdminController {
      */
     private JsonArray getCheckedMenuByParentId(Integer parentId, List<Integer> menuIdList) {
         Example tmenuExample = new Example(Tmenu.class);
-        tmenuExample.or().andEqualTo("pId",parentId);
+        tmenuExample.or().andEqualTo("pId", parentId);
         List<Tmenu> menuList = tmenuService.selectByExample(tmenuExample);
         JsonArray jsonArray = new JsonArray();
         for (Tmenu menu : menuList) {
@@ -280,10 +280,10 @@ public class RoleAdminController {
             jsonObject.addProperty("id", menuId); // 节点id
             jsonObject.addProperty("name", menu.getName()); // 节点名称
             //判断该节点下时候还有子节点
-            Example example=new Example(Tmenu.class);
-            example.or().andEqualTo("pId",jsonObject.get("id").getAsString());
+            Example example = new Example(Tmenu.class);
+            example.or().andEqualTo("pId", jsonObject.get("id").getAsString());
             //if (menu.getState() == 1) {
-            if (tmenuService.selectCountByExample(example)==0) {
+            if (tmenuService.selectCountByExample(example) == 0) {
                 jsonObject.addProperty("open", "true"); // 无子节点
             } else {
                 jsonObject.addProperty("open", "false"); // 有子节点
@@ -326,9 +326,9 @@ public class RoleAdminController {
                 menuIdList.add(menu.getId());
             }
 
-            if(menuIdList!=null&&menuIdList.size()>0){
+            if (menuIdList != null && menuIdList.size() > 0) {
                 Example trolemenuExample = new Example(Trolemenu.class);
-                trolemenuExample.or().andEqualTo("roleId",roleId).andIn("menuId",menuIdList);
+                trolemenuExample.or().andEqualTo("roleId", roleId).andIn("menuId", menuIdList);
                 trolemenuService.deleteByExample(trolemenuExample);
             }
 
@@ -339,7 +339,7 @@ public class RoleAdminController {
                 trolemenu.setMenuId(Integer.parseInt(idsStr[i]));
                 trolemenuService.saveNotNull(trolemenu);
             }
-        }else{
+        } else {
             resultmap.put("state", "fail");
             resultmap.put("mesg", "操作失败，未获取选中记录，请重新选择");
             return resultmap;
@@ -483,13 +483,11 @@ public class RoleAdminController {
                 menuIdList.add(menu.getId());
             }
 
-            if(menuIdList!=null&&menuIdList.size()>0){
+            if (menuIdList != null && menuIdList.size() > 0) {
                 Example trolemenuExample = new Example(Trolemenu.class);
-                trolemenuExample.or().andEqualTo("roleId",roleId).andIn("menuId",menuIdList);
+                trolemenuExample.or().andEqualTo("roleId", roleId).andIn("menuId", menuIdList);
                 trolemenuService.deleteByExample(trolemenuExample);
             }
-
-
 
 
             String namesStr[] = permisIds.split(",");
@@ -500,7 +498,7 @@ public class RoleAdminController {
                 Integer menuid = null;
                 //根据name先查询有没有这个menu
                 Example tmenuExample = new Example(Tmenu.class);
-                tmenuExample.or().andEqualTo("name",namesStr[i]).andIsNull("pId");
+                tmenuExample.or().andEqualTo("name", namesStr[i]).andIsNull("pId");
                 List<Tmenu> tmenuList = tmenuService.selectByExample(tmenuExample);
                 if (tmenuList == null || tmenuList.size() == 0) {
                     //当前menu表还没有这个name的记录，则先新增menu表的记录，再新增中间表的几率
@@ -509,7 +507,7 @@ public class RoleAdminController {
                     tmenuService.saveNotNull(tmenu);
 
                     Example tmenuExample2 = new Example(Tmenu.class);
-                    tmenuExample2.or().andEqualTo("name",tmenu.getName()).andIsNull("pId");
+                    tmenuExample2.or().andEqualTo("name", tmenu.getName()).andIsNull("pId");
                     List<Tmenu> tmenuList2 = tmenuService.selectByExample(tmenuExample2);
                     if (tmenuList2 != null && tmenuList2.size() > 0) {
                         menuid = tmenuList2.get(0).getId();
