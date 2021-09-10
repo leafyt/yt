@@ -144,7 +144,7 @@
     </div>
     <!-- 底部 -->
     <div class="layui-footer footer">
-        <p><span>copyright @2018 ZJT</span></p>
+        <p><span>dorm manager @2021 yt</span></p>
     </div>
 </div>
 

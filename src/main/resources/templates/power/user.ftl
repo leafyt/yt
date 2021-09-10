@@ -56,7 +56,7 @@
                     }
                 });
 
-                //监听提交
+                //监听提交,用户管理新增和修改
                 form.on('submit(addeditsubmitfilter)', function (data) {
 
                     //为了防止form中的id值被重置后置空,将编辑的id存放在label中
@@ -79,7 +79,7 @@
                                 layer.open({
                                     skin: 'layui-layer-molv',
                                     type: 1,
-                                    area: "10%",
+                                    area: "12%",
                                     content: data.mesg,
                                     shadeClose: true,
                                     end: function () {
@@ -98,7 +98,7 @@
                 });
 
 
-                //监听提交
+                //监听提交 用户管理设置关联角色
                 form.on('submit(editroleformsubmit)', function (data) {
                     //为了防止form中的id值被重置后置空,将编辑的id存放在label中
                     $("#editroleid").val($("#editrolelabelid").html());
@@ -221,7 +221,7 @@
                 search: true,
             });
 
-            //添加按钮点击事件
+            //添加按钮点击事件 新增用户
             $("#add").click(function () {
                 $("#reset").click();//重置表单(新建时在进入表单前要重置一下表单的内容，不然表单打开后会显示上一次的表单的内容。这里调用表单中重置按钮的点击方法来重置)
                 layerid = layer.open({//开启表单弹层
@@ -233,7 +233,7 @@
                 });
             });
 
-
+            //删除用户
             $("#delete").click(function () {
 
                 var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');//jqgrid逻辑id，不是业务表单的主键字段id,这里要注意
@@ -290,7 +290,7 @@
 
             });
 
-
+            //编辑用户
             $("#edit").click(function () {
 
                 var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');//jqgrid逻辑id，不是业务表单的主键字段id,这里要注意
@@ -341,7 +341,7 @@
             });
 
 
-            //编辑用户角色
+            //编辑用户关联角色
             $("#editrole").click(function () {
 
                 var id = jQuery("#list2").jqGrid('getGridParam', 'selrow');//jqgrid逻辑id，不是业务表单的主键字段id,这里要注意
